@@ -87,10 +87,14 @@
 <meta property="og:site_name" content="小舟上的传道者">
 <meta property="og:description" content="2009年，创始人Ryan Dahl基于V8引擎，创建了一个轻量级的Web服务器并提供了一套库，这就是Node.js（Node）的最初版本；2010年，Node获得硅谷云计算服务商Joyent公司的资助，Ryan Dahl加入Joyent公司全职负责Node的发展；2011年，Node在微软的支持下发布了其Windows版本；2012年，Ryan Dahl将掌门人的身份交给Isaac Z.Schl">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-10-11T15:28:28.484Z">
+<meta property="og:image" content="http://yoursite.com/2020/10/10/node-introduce/chrome和node结构对比.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/10/10/node-introduce/异步调用.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/10/10/node-introduce/node基于libuv的架构.jpg">
+<meta property="og:updated_time" content="2020-10-18T07:51:35.637Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《Node.js从入门到抓狂》- Node简介">
 <meta name="twitter:description" content="2009年，创始人Ryan Dahl基于V8引擎，创建了一个轻量级的Web服务器并提供了一套库，这就是Node.js（Node）的最初版本；2010年，Node获得硅谷云计算服务商Joyent公司的资助，Ryan Dahl加入Joyent公司全职负责Node的发展；2011年，Node在微软的支持下发布了其Windows版本；2012年，Ryan Dahl将掌门人的身份交给Isaac Z.Schl">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/10/node-introduce/chrome和node结构对比.jpg">
 
 
 
@@ -344,6 +348,11 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -365,6 +374,36 @@
         <p>2009年，创始人Ryan Dahl基于V8引擎，创建了一个轻量级的Web服务器并提供了一套库，这就是Node.js（Node）的最初版本；2010年，Node获得硅谷云计算服务商Joyent公司的资助，Ryan Dahl加入Joyent公司全职负责Node的发展；2011年，Node在微软的支持下发布了其Windows版本；2012年，Ryan Dahl将掌门人的身份交给Isaac Z.Schlueter（NPM的作者），之后Node的版本发布和bug修复等工作由他接手。</p>
 <h2 id="为什么是JavaScript"><a href="#为什么是JavaScript" class="headerlink" title="为什么是JavaScript"></a>为什么是JavaScript</h2><p>Node设计的初衷，是设计一种Web服务器，Web服务器有两个要点：事件驱动、非阻塞I/O。相比于C、Lua、Ruby等语言，JavaScript比C的开发门槛要低、比Lua的历史包袱要少（Lua包含了很多的阻塞I/O库）、比Ruby的性能要高。</p>
 <p>尽管JavaScript存在很多年，但是服务器端一直没有市场，历史包袱几乎为零，为其导入非阻塞I/O库没有额外的阻力；同时，JavaScript在浏览器中有广泛的事件驱动方面的应用，暗合Node事件驱动的需求；最后，Chrome浏览器的JavaScript引擎V8在第二次浏览器大战中摘得性能第一的桂冠。因此，基于以上三点：高性能、事件驱动、非阻塞I/O，JavaScript成为Node的实现语言。</p>
+<h2 id="Node与Chrome的组件比较"><a href="#Node与Chrome的组件比较" class="headerlink" title="Node与Chrome的组件比较"></a>Node与Chrome的组件比较</h2><p><img src="chrome和node结构对比.jpg" alt><br>Chrome浏览器与Node的组成结构上图所示，Chrome除了V8作为JavaScript的引擎外，还有WebKit布局引擎；除此以外，HTML5在发展过程中定义了更多更丰富的API，为Chrome浏览器的前端展示起到了非常重要的作用。</p>
+<p>除了HTML、WebKit和显卡这些UI相关技术没有支持以外，Node的结构和Chrome十分相似。它们都是基于事件驱动的异步架构，浏览器通过事件驱动来服务界面上的交互，Node则通过事件驱动来服务I/O。</p>
+<p>Node的兴起给JavaScript语言带来的意义非凡。在Node中，JavaScript可以随心所欲访问本地文件，可以搭建WebSocket服务器端，可以连接数据库，同样也可以玩转多进程。Node打破了过去JavaScript只能在浏览器中运行的局面，JavaScript不再继续限制在浏览器中与CSS、DOM树打交道。前后端编程环境统一，可以大大降低前后端转换所需要的上下文交互的代价。</p>
+<h2 id="Node特点"><a href="#Node特点" class="headerlink" title="Node特点"></a>Node特点</h2><p>作为JavaScript语言的服务端运行框架，Node保留了前端JavaScript中的接口，依旧基于作用域和原型链。Node的相较于其它编程语言，具有以下特点：</p>
+<h4 id="1-异步I-O"><a href="#1-异步I-O" class="headerlink" title="1. 异步I/O"></a>1. 异步I/O</h4><p>熟悉Ajax的开发人员对异步I/O应该比较了解，如下代码所示：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$.post(<span class="string">'\url'</span>, &#123;&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'收到响应'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'发送请求结束'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>熟悉异步机制的开发者知道，“收到响应”是在“发送请求结束”之后输出的。在调用“$.post”方法后，程序会立即执行“发送请求结束”的打印，而“收到响应”的执行时间是不被预期的。</p>
+<p>在Node中，异步机制很常见，以读取文件为例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line">fs.readFile(<span class="string">'/path'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, file</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'读取文件完成'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'开始读取文件'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>同样的，“读取文件完成”是在“开始读取文件”之后打印的，“读取文件完成”的执行取决于读取文件操作的异步调用何时结束。下图就这个例子展示了异步调用的时序图：</p>
+<p><img src="异步调用.jpg" alt><br>在Node中，绝大多数的操作都是以异步方法来进行调用的，这样我们可以从语言层面自然地进行并行I/O操作，每个调用之间无须等待之前的I/O操作结束。</p>
+<h4 id="2-事件与回调"><a href="#2-事件与回调" class="headerlink" title="2. 事件与回调"></a>2. 事件与回调</h4><p>首先，我们来看这样两段代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    <span class="string">'url'</span>: <span class="string">'/url'</span>,</span><br><span class="line">    <span class="string">'method'</span>: <span class="string">'post'</span>,</span><br><span class="line">    <span class="string">'data'</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">'success'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// success事件</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = request(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听服务器的request事件</span></span><br><span class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> postData = <span class="string">''</span>;</span><br><span class="line">    <span class="comment">// 监听请求的data事件</span></span><br><span class="line">    req.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">chunk</span>) </span>&#123;</span><br><span class="line">        postData += chunk;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 监听请求的end事件</span></span><br><span class="line">    req.on(<span class="string">'end'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        res.end(postData);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;).listen(<span class="number">8080</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'服务器启动完成'</span>);</span><br></pre></td></tr></table></figure>
+<p>以上两段代码分别是前端调用Ajax请求，后端创建了一个Web服务器。前端为Ajax请求绑定了success事件，后端为服务器绑定了request事件，同时对请求对象绑定了data事件和end事件。因此，对于前后端，事件都是常用的，尤其在异步任务场景下，如何协调各个事件的调用顺序是个难点。</p>
+<p>回调函数是协调各个事件执行的方法之一，也是Node语言的一大特点。从异步I/O的内容来看，回调函数是最好的接收异步方法返回数据的方式。Node开发者需要明白，代码的编写顺序与执行顺序并无关系，异步机制和回调函数是代码流程控制的要点。</p>
+<h4 id="3-单线程"><a href="#3-单线程" class="headerlink" title="3. 单线程"></a>3. 单线程</h4><p>Node保留了JavaScript在浏览器中单线程的特点，单线程的优势包括：</p>
+<ol>
+<li>不用像多线程编程处处在意各线程状态的同步问题；</li>
+<li>没有死锁的存在；</li>
+<li>没有线程上下文交换所带来的性能上开销；</li>
+</ol>
+<p>同样的，单线程也有其自身的弱点，主要有三点：</p>
+<ol>
+<li>无法利用多核CPU；</li>
+<li>一个错误就会引起整个应用退出，应用的健壮性有待考验；</li>
+<li>大量计算占用CPU导致无法继续调用异步I/O；</li>
+</ol>
+<p>浏览器中，JavaScript与UI共用一个线程时，JavaScript长时间执行会导致UI无法渲染，用户体现很差；同样，在Node中，长时间的CPU计算会导致后续的异步I/O无法调用。目前，解决浏览器中JavaScript大计算阻塞UI渲染的问题，是通过Web Workers创建工作线程来进行计算。工作线程为了不阻塞主线程，通过消息传递的方式来告知主线程结果。</p>
+<p>Node采用了与Web Workers相同的思路来解决单线程大计算的问题：子进程（child_process）。Node可以通过子进程来应对单进程健壮性和无法利用多核CPU的问题。通过将计算分发到各个子进程，再通过进程之间的事件消息来传递结果。</p>
+<h4 id="4-跨平台"><a href="#4-跨平台" class="headerlink" title="4. 跨平台"></a>4. 跨平台</h4><p>Node原先只可以在Linux平台上运行，随着Node发展，在v0.6.0版本可以直接在Windows平台上运行。Node兼容Windows和Linux平台主要得益于平台层的架构，即libuv，它处于操作系统与Node上层模块系统之间，如下图所示。不仅如此，通过libuv，Node的第三方C++模块也可以实现跨平台，能直接被JavaScript调用。</p>
+<p><img src="node基于libuv的架构.jpg" alt></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要简单介绍了Node开发框架，可以知道Node的其中一个优势是异步机制，利用事件循环的处理能力可以很好地处理I/O密集型应用场景，不需要启动每一个线程来单独为每一个请求服务。</p>
 
       
     </div>
@@ -562,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么是JavaScript"><span class="nav-number">1.</span> <span class="nav-text">为什么是JavaScript</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么是JavaScript"><span class="nav-number">1.</span> <span class="nav-text">为什么是JavaScript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node与Chrome的组件比较"><span class="nav-number">2.</span> <span class="nav-text">Node与Chrome的组件比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node特点"><span class="nav-number">3.</span> <span class="nav-text">Node特点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-异步I-O"><span class="nav-number">3.0.1.</span> <span class="nav-text">1. 异步I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-事件与回调"><span class="nav-number">3.0.2.</span> <span class="nav-text">2. 事件与回调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-单线程"><span class="nav-number">3.0.3.</span> <span class="nav-text">3. 单线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-跨平台"><span class="nav-number">3.0.4.</span> <span class="nav-text">4. 跨平台</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></div>
             
 
           </div>
@@ -605,7 +644,39 @@
 
 
 
+<% if (theme.busuanzi && theme.busuanzi.enable){ %>
+      <!-- 不蒜子统计 -->
+      <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+      </span>
+      <span class="post-meta-divider">|</span>
+      <span id="busuanzi_container_site_uv" style="display:none">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人
+      </span>
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<% } %>
+
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
 
 
 
@@ -614,7 +685,7 @@
 
 
         
-      </div>
+      </%></%></div>
     </footer>
 
     
